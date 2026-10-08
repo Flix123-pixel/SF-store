@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SF Store - Games, Apps & Web Apps</title>
+  <title>SF Store - Games, Apps & Free Websites</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -17,6 +17,7 @@
       --text-muted: #9aa0a6;
       --star-color: #fbbc04;
       --success: #34a853;
+      --badge-bg: #e37400;
     }
 
     * {
@@ -122,7 +123,7 @@
 
     .app-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
@@ -167,8 +168,15 @@
       width: fit-content;
     }
 
+    .type-badge.sf-special {
+      background: rgba(227, 116, 0, 0.2);
+      border-color: var(--badge-bg);
+      color: #ffaa45;
+      font-weight: 600;
+    }
+
     .app-info h3 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #fff;
       margin-bottom: 0.2rem;
     }
@@ -342,7 +350,7 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
+  <!-- Top Header -->
   <header>
     <div class="brand" onclick="switchView('storeView')">
       SF <span>Store</span>
@@ -356,7 +364,7 @@
   <main>
     <!-- 1. PUBLIC STORE CATALOG -->
     <section id="storeView" class="view active">
-      <h2 class="section-title">Games, Applications & Web Apps</h2>
+      <h2 class="section-title">Games, Applications & Free Websites</h2>
       <div class="app-grid" id="appsContainer"></div>
     </section>
 
@@ -366,11 +374,11 @@
       
       <div class="detail-card">
         <div class="detail-header">
-          <div class="app-icon" id="dIcon">⚡</div>
+          <div class="app-icon" id="dIcon">🌐</div>
           <div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <h1 id="dTitle" style="font-size: 1.7rem; color: #fff;">App Name</h1>
-              <span id="dTypeBadge" class="type-badge">APK</span>
+              <h1 id="dTitle" style="font-size: 1.6rem; color: #fff;">Free Website From SF Studio</h1>
+              <span id="dTypeBadge" class="type-badge sf-special">Website</span>
             </div>
             <p id="dCompany" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 3px;">Company Name</p>
             <div class="app-rating-row" style="margin-top: 6px;">
@@ -378,22 +386,22 @@
             </div>
           </div>
           <div style="margin-left: auto;">
-            <!-- Dynamic button changes text to 'Install' or 'Open Website' -->
+            <!-- Install or Open Website Redirection Button -->
             <a id="dInstallBtn" class="btn" style="padding: 0.75rem 2rem; font-size: 1rem;" target="_blank">
-              <span id="dBtnText">Install App</span>
+              <span id="dBtnText">Open Free Website ↗</span>
             </a>
           </div>
         </div>
 
         <div>
-          <h3>About this app</h3>
+          <h3>About this release</h3>
           <p id="dDesc" style="color: var(--text-muted); margin-top: 0.5rem; line-height: 1.6;"></p>
         </div>
 
-        <!-- Rating & Reviews for users -->
+        <!-- Rating & User Reviews -->
         <div class="reviews-section">
           <h3>Ratings & Reviews</h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Have you tried this app? Leave a review for the community.</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Share your feedback about this website or app.</p>
           
           <form id="reviewForm" style="margin-top: 1rem;" onsubmit="submitReview(event)">
             <div class="form-group" style="margin-bottom: 0.5rem;">
@@ -402,7 +410,7 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 0.5rem;">
-              <label>Your Rating</label>
+              <label>Rating</label>
               <div class="star-select" id="starContainer">
                 <span class="star selected" onclick="setRating(1)">★</span>
                 <span class="star selected" onclick="setRating(2)">★</span>
@@ -413,8 +421,8 @@
             </div>
 
             <div class="form-group">
-              <label>Your Review</label>
-              <textarea id="reviewText" rows="3" placeholder="Write feedback about performance, bugs or features..." required></textarea>
+              <label>Review</label>
+              <textarea id="reviewText" rows="3" placeholder="Write feedback..." required></textarea>
             </div>
 
             <button type="submit" class="btn">Submit Review</button>
@@ -425,38 +433,38 @@
       </div>
     </section>
 
-    <!-- 3. SF CREATOR REGISTRATION (Pay ₹1000 or Enter 'sf games and apps ltd.') -->
+    <!-- 3. SF CREATOR REGISTRATION -->
     <section id="devRegisterView" class="view">
       <div class="detail-card" style="max-width: 650px; margin: 0 auto;">
         <h2>Create SF Creator Account</h2>
         <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
-          Register as an SF developer to publish APK packages and web links.
+          Register as an SF developer to publish APKs and viral websites.
         </p>
 
         <form id="regForm" onsubmit="handleDevRegister(event)">
           <div class="form-group">
             <label>Owner Name *</label>
-            <input type="text" id="regOwner" placeholder="e.g. Rahul Sharma" required />
+            <input type="text" id="regOwner" placeholder="Your Full Name" required />
           </div>
 
           <div class="form-group">
             <label>Developer Account / Company Name *</label>
             <input type="text" id="regCompany" placeholder="e.g. sf games and apps ltd." required oninput="checkPartnerStatus()" />
             <small style="color: var(--text-muted); font-size: 0.78rem;">
-              Accounts named <code>sf games and apps ltd.</code> qualify for instant free access.
+              Entering <code>sf games and apps ltd.</code> unlocks instant free access.
             </small>
           </div>
 
-          <!-- Free Bypass Notification -->
+          <!-- Free Partner Alert -->
           <div id="partnerBanner" class="free-partner-alert">
-            🎉 Partner Verified: Welcome, SF Games and Apps Ltd.! Registration fee waived.
+            🎉 Partner Verified: Welcome, SF Games and Apps Ltd.! ₹1,000 fee waived.
           </div>
 
           <!-- ₹1000 Fee Payment Screen -->
           <div id="paymentBox" class="qr-container">
             <div style="font-weight: 700; color: #fff; font-size: 1.1rem;">One-Time Account Activation: ₹1,000</div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-              Scan the QR Code with Google Pay, PhonePe, or Paytm to finish setup.
+              Scan the QR Code with Google Pay, PhonePe, or Paytm.
             </p>
             <div class="qr-box">
               <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=sfstore@upi&pn=SF%20Developer%20Account&am=1000&cu=INR" alt="Pay ₹1000" />
@@ -471,12 +479,12 @@
       </div>
     </section>
 
-    <!-- 4. DEVELOPER CONSOLE (Publish APK, Google Drive, or Website Link) -->
+    <!-- 4. DEVELOPER CONSOLE -->
     <section id="devConsoleView" class="view">
       <div class="detail-card">
-        <h2>SF Developer Console — Publish App</h2>
+        <h2>SF Developer Console — Publish Release</h2>
         <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
-          Publish standalone APK files, Google Drive links, or direct website links.
+          Publish APK packages or link your website.
         </p>
 
         <form id="publishForm" onsubmit="handleAppPublish(event)">
@@ -485,31 +493,25 @@
             <input type="text" id="pubCompany" readonly style="opacity: 0.85; cursor: not-allowed;" />
           </div>
 
+          <!-- App / Website Name input -->
           <div class="form-group">
-            <label>App / Game Name *</label>
-            <input type="text" id="pubAppName" placeholder="e.g. Galaxy Quest or MyStore App" required />
+            <label id="nameInputLabel">App / Game Name *</label>
+            <input type="text" id="pubAppName" placeholder="e.g. Cyber Rush 3D" required />
+            <small id="nameInputHint" style="color: var(--text-muted); font-size: 0.78rem; display:none;">
+              Websites will be automatically published with the official brand: <b>Free Website From SF Studio</b>.
+            </small>
           </div>
 
-          <div class="form-group">
-            <label>Category *</label>
-            <select id="pubCategory">
-              <option value="Game">Game</option>
-              <option value="Application">Application</option>
-              <option value="Web App">Web App</option>
-            </select>
-          </div>
-
-          <!-- Method Selection Tabs -->
           <div class="form-group">
             <label>Choose Publishing Method *</label>
             <div class="tab-options">
-              <button type="button" class="tab-btn active" onclick="selectPublishMethod('file')">📦 Direct APK File</button>
+              <button type="button" class="tab-btn" onclick="selectPublishMethod('file')">📦 Direct APK File</button>
               <button type="button" class="tab-btn" onclick="selectPublishMethod('drive')">📁 Google Drive Link</button>
-              <button type="button" class="tab-btn" onclick="selectPublishMethod('web')">🌐 Website Link</button>
+              <button type="button" class="tab-btn active" onclick="selectPublishMethod('web')">🌐 Website Link (Viral)</button>
             </div>
 
             <!-- APK File Method -->
-            <div id="methodFile" class="method-panel active">
+            <div id="methodFile" class="method-panel">
               <input type="file" id="pubApkFile" accept=".apk" style="padding: 0.6rem;" />
               <small style="color: var(--text-muted); font-size: 0.78rem;">Upload your compiled .apk package directly.</small>
             </div>
@@ -520,16 +522,27 @@
               <small style="color: var(--text-muted); font-size: 0.78rem;">Public Google Drive shareable link to your APK.</small>
             </div>
 
-            <!-- Website Link Method -->
-            <div id="methodWeb" class="method-panel">
+            <!-- Website Link Method (Defaulted to Free Website From SF Studio) -->
+            <div id="methodWeb" class="method-panel active">
               <input type="url" id="pubWebLink" placeholder="https://yourwebsite.com or https://play.mygame.com" />
-              <small style="color: var(--text-muted); font-size: 0.78rem;">Users clicking 'Install' will be redirected directly to this website.</small>
+              <small style="color: #ffaa45; font-size: 0.8rem; margin-top: 4px; display:block;">
+                ⚡ This website will be featured on the store as <b>"Free Website From SF Studio"</b> and redirect users immediately when clicked!
+              </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Store Description *</label>
-            <textarea id="pubDesc" rows="4" placeholder="Describe the application features, instructions, and changelog..." required></textarea>
+            <label>Category *</label>
+            <select id="pubCategory">
+              <option value="Web App">Free Website / Web App</option>
+              <option value="Game">Game</option>
+              <option value="Application">Application</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="pubDesc" rows="4" placeholder="Describe the website or application features..." required></textarea>
           </div>
 
           <button type="submit" class="btn" style="padding: 0.75rem 2rem;">Publish to SF Store</button>
@@ -539,34 +552,34 @@
   </main>
 
   <script>
-    // Pre-loaded applications catalog
+    // Initial Apps with "Free Website From SF Studio" pre-loaded
     let apps = [
       {
         id: 1,
-        name: "Cyber Runner",
+        name: "Free Website From SF Studio",
         company: "SF Games and Apps Ltd.",
-        category: "Game",
-        type: "Direct APK",
-        icon: "🎮",
-        desc: "Fast-paced endless runner game with neon visuals and custom challenges.",
-        actionUrl: "#",
-        isWebLink: false,
+        category: "Web App",
+        type: "Free Website",
+        icon: "🌐",
+        desc: "Official viral website portal powered directly by SF Studio. Tap 'Open Free Website' to be instantly redirected.",
+        actionUrl: "https://www.google.com",
+        isWebLink: true,
         reviews: [
-          { author: "Aman", rating: 5, text: "Awesome graphics and zero lag!" }
+          { author: "Karan", rating: 5, text: "Instant redirect works smooth and fast!" }
         ]
       },
       {
         id: 2,
-        name: "CryptoPortal",
-        company: "WebTech Solutions",
-        category: "Web App",
-        type: "Website Link",
-        icon: "🌐",
-        desc: "Interactive live crypto tracking web suite. Seamless browser experience.",
-        actionUrl: "https://www.google.com",
-        isWebLink: true,
+        name: "Cyber Runner 2026",
+        company: "SF Games and Apps Ltd.",
+        category: "Game",
+        type: "Direct APK",
+        icon: "🎮",
+        desc: "High adrenaline sci-fi arcade runner build.",
+        actionUrl: "#",
+        isWebLink: false,
         reviews: [
-          { author: "Vikram", rating: 4, text: "Very convenient web app!" }
+          { author: "Aman", rating: 5, text: "Awesome gameplay!" }
         ]
       }
     ];
@@ -574,16 +587,14 @@
     let devAccount = null;
     let currentAppId = null;
     let selectedRating = 5;
-    let currentUploadMethod = 'file';
+    let currentUploadMethod = 'web';
 
-    // Switch between pages
     function switchView(viewId) {
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       document.getElementById(viewId).classList.add('active');
       if (viewId === 'storeView') renderAppGrid();
     }
 
-    // Header Developer button handler
     function handleDevNav() {
       if (devAccount) {
         document.getElementById('pubCompany').value = devAccount.company;
@@ -593,7 +604,7 @@
       }
     }
 
-    // Toggle between APK, Drive, and Web Link tabs
+    // Toggle publish methods & automatically lock/update name if Website is chosen
     function selectPublishMethod(method) {
       currentUploadMethod = method;
       document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
@@ -607,9 +618,21 @@
       document.getElementById('methodFile').classList.toggle('active', method === 'file');
       document.getElementById('methodDrive').classList.toggle('active', method === 'drive');
       document.getElementById('methodWeb').classList.toggle('active', method === 'web');
+
+      const nameInput = document.getElementById('pubAppName');
+      const hint = document.getElementById('nameInputHint');
+
+      if (method === 'web') {
+        nameInput.value = "Free Website From SF Studio";
+        nameInput.readOnly = true;
+        hint.style.display = 'block';
+      } else {
+        if (nameInput.value === "Free Website From SF Studio") nameInput.value = "";
+        nameInput.readOnly = false;
+        hint.style.display = 'none';
+      }
     }
 
-    // Detect secret developer bypass
     function checkPartnerStatus() {
       const input = document.getElementById('regCompany').value.trim().toLowerCase();
       const banner = document.getElementById('partnerBanner');
@@ -624,7 +647,6 @@
       }
     }
 
-    // Handle developer account activation
     function handleDevRegister(e) {
       e.preventDefault();
       const owner = document.getElementById('regOwner').value.trim();
@@ -642,18 +664,18 @@
       devAccount = { owner, company, isPartner };
       document.getElementById('devPortalBtn').innerText = 'Console: ' + company;
       document.getElementById('pubCompany').value = company;
+      selectPublishMethod('web'); // default to website as requested
       alert('SF Creator Account Activated successfully!');
       switchView('devConsoleView');
     }
 
-    // Developer App Publishing
     function handleAppPublish(e) {
       e.preventDefault();
       const company = document.getElementById('pubCompany').value;
-      const name = document.getElementById('pubAppName').value.trim();
       const category = document.getElementById('pubCategory').value;
       const desc = document.getElementById('pubDesc').value.trim();
 
+      let appName = document.getElementById('pubAppName').value.trim();
       let actionUrl = "";
       let isWebLink = false;
       let typeLabel = "APK";
@@ -661,7 +683,7 @@
       if (currentUploadMethod === 'file') {
         const fileInput = document.getElementById('pubApkFile');
         if (fileInput.files.length === 0) {
-          alert('Please select an APK file to upload.');
+          alert('Please upload an APK file.');
           return;
         }
         actionUrl = URL.createObjectURL(fileInput.files[0]);
@@ -669,7 +691,7 @@
       } else if (currentUploadMethod === 'drive') {
         actionUrl = document.getElementById('pubDriveLink').value.trim();
         if (!actionUrl) {
-          alert('Please enter a valid Google Drive link.');
+          alert('Please enter a Google Drive link.');
           return;
         }
         typeLabel = "Drive APK";
@@ -679,17 +701,18 @@
           alert('Please enter your website URL.');
           return;
         }
-        // Ensure proper schema
         if (!actionUrl.startsWith('http://') && !actionUrl.startsWith('https://')) {
           actionUrl = 'https://' + actionUrl;
         }
+        // Force exact viral name as requested
+        appName = "Free Website From SF Studio";
         isWebLink = true;
-        typeLabel = "Web Link";
+        typeLabel = "Free Website";
       }
 
       const newApp = {
         id: Date.now(),
-        name,
+        name: appName,
         company,
         category,
         type: typeLabel,
@@ -702,11 +725,11 @@
 
       apps.unshift(newApp);
       document.getElementById('publishForm').reset();
-      alert('Your app has been published to the SF Store!');
+      selectPublishMethod('web');
+      alert(`Published successfully as "${appName}"!`);
       switchView('storeView');
     }
 
-    // Render Store Grid
     function renderAppGrid() {
       const container = document.getElementById('appsContainer');
       container.innerHTML = '';
@@ -716,6 +739,7 @@
           ? (app.reviews.reduce((s, r) => s + r.rating, 0) / app.reviews.length).toFixed(1)
           : 'New';
 
+        const isSfWeb = app.isWebLink;
         const card = document.createElement('div');
         card.className = 'app-card';
         card.onclick = () => openAppDetails(app.id);
@@ -725,7 +749,9 @@
             <div class="app-info">
               <h3>${app.name}</h3>
               <div class="company">${app.company}</div>
-              <span class="type-badge" style="margin-top: 4px; display:inline-block;">${app.type}</span>
+              <span class="type-badge ${isSfWeb ? 'sf-special' : ''}" style="margin-top: 4px; display:inline-block;">
+                ${isSfWeb ? '🔥 Free Website' : app.type}
+              </span>
             </div>
           </div>
           <div class="app-rating-row">
@@ -737,7 +763,6 @@
       });
     }
 
-    // Open Application Details
     function openAppDetails(id) {
       currentAppId = id;
       const app = apps.find(a => a.id === id);
@@ -751,12 +776,11 @@
 
       const installBtn = document.getElementById('dInstallBtn');
       const btnText = document.getElementById('dBtnText');
-
       installBtn.href = app.actionUrl;
 
-      // Handle Web Link redirect vs APK file download
+      // Handle website direct redirect vs direct APK download
       if (app.isWebLink) {
-        btnText.innerText = "Visit Website ↗";
+        btnText.innerText = "Open Free Website ↗";
         installBtn.removeAttribute('download');
       } else if (app.actionUrl.startsWith('blob:')) {
         btnText.innerText = "Download APK";
@@ -770,7 +794,6 @@
       switchView('appDetailView');
     }
 
-    // Reviews System
     function renderReviews(app) {
       const avg = app.reviews.length
         ? (app.reviews.reduce((s, r) => s + r.rating, 0) / app.reviews.length).toFixed(1)
@@ -820,7 +843,7 @@
       renderReviews(app);
     }
 
-    // Initial render
+    // Initialize Store
     renderAppGrid();
   </script>
 </body>
