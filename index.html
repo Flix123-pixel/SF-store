@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SF Store - Games, Apps & Web Apps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0b57d0;
+      --primary-hover: #0842a0;
+      --bg: #0f1115;
+      --card-bg: #1a1e24;
+      --surface-light: #252b33;
+      --border: #313844;
+      --text: #e1e3e6;
+      --text-muted: #9aa0a6;
+      --star-color: #fbbc04;
+      --success: #34a853;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .brand {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .brand span {
+      color: #1a73e8;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-light);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .app-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .app-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+    }
+
+    .app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1a73e8, #681da8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .type-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: fit-content;
+    }
+
+    .app-info h3 {
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .app-info .company {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .app-rating-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--star-color);
+      font-weight: 600;
+    }
+
+    .detail-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .detail-header .app-icon {
+      width: 90px;
+      height: 90px;
+      font-size: 2.5rem;
+    }
+
+    .reviews-section {
+      margin-top: 2rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .star-select {
+      display: flex;
+      gap: 0.3rem;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .star {
+      font-size: 1.5rem;
+      color: var(--border);
+    }
+
+    .star.selected {
+      color: var(--star-color);
+    }
+
+    .review-list {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .review-item {
+      background: var(--surface-light);
+      padding: 0.9rem;
+      border-radius: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    .qr-container {
+      background: rgba(11, 87, 208, 0.08);
+      border: 1px dashed var(--primary);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .qr-box {
+      width: 180px;
+      height: 180px;
+      margin: 1rem auto;
+      background: #fff;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .free-partner-alert {
+      display: none;
+      background: rgba(52, 168, 83, 0.15);
+      border: 1px solid var(--success);
+      color: #81c995;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    .tab-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .method-panel {
+      display: none;
+    }
+
+    .method-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="brand" onclick="switchView('storeView')">
+      SF <span>Store</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" onclick="switchView('storeView')">Explore Store</button>
+      <button class="btn" id="devPortalBtn" onclick="handleDevNav()">Developer Console</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. PUBLIC STORE CATALOG -->
+    <section id="storeView" class="view active">
+      <h2 class="section-title">Games, Applications & Web Apps</h2>
+      <div class="app-grid" id="appsContainer"></div>
+    </section>
+
+    <!-- 2. DETAIL VIEW & REVIEWS -->
+    <section id="appDetailView" class="view">
+      <button class="btn btn-outline" style="margin-bottom: 1rem;" onclick="switchView('storeView')">← Back to Store</button>
+      
+      <div class="detail-card">
+        <div class="detail-header">
+          <div class="app-icon" id="dIcon">⚡</div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h1 id="dTitle" style="font-size: 1.7rem; color: #fff;">App Name</h1>
+              <span id="dTypeBadge" class="type-badge">APK</span>
+            </div>
+            <p id="dCompany" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 3px;">Company Name</p>
+            <div class="app-rating-row" style="margin-top: 6px;">
+              ⭐ <span id="dRating">5.0</span> (<span id="dReviewCount">0</span> Reviews)
+            </div>
+          </div>
+          <div style="margin-left: auto;">
+            <!-- Dynamic button changes text to 'Install' or 'Open Website' -->
+            <a id="dInstallBtn" class="btn" style="padding: 0.75rem 2rem; font-size: 1rem;" target="_blank">
+              <span id="dBtnText">Install App</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3>About this app</h3>
+          <p id="dDesc" style="color: var(--text-muted); margin-top: 0.5rem; line-height: 1.6;"></p>
+        </div>
+
+        <!-- Rating & Reviews for users -->
+        <div class="reviews-section">
+          <h3>Ratings & Reviews</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Have you tried this app? Leave a review for the community.</p>
+          
+          <form id="reviewForm" style="margin-top: 1rem;" onsubmit="submitReview(event)">
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <label>Your Name</label>
+              <input type="text" id="reviewerName" placeholder="Enter your name" required />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <label>Your Rating</label>
+              <div class="star-select" id="starContainer">
+                <span class="star selected" onclick="setRating(1)">★</span>
+                <span class="star selected" onclick="setRating(2)">★</span>
+                <span class="star selected" onclick="setRating(3)">★</span>
+                <span class="star selected" onclick="setRating(4)">★</span>
+                <span class="star selected" onclick="setRating(5)">★</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Your Review</label>
+              <textarea id="reviewText" rows="3" placeholder="Write feedback about performance, bugs or features..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn">Submit Review</button>
+          </form>
+
+          <div class="review-list" id="reviewsContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SF CREATOR REGISTRATION (Pay ₹1000 or Enter 'sf games and apps ltd.') -->
+    <section id="devRegisterView" class="view">
+      <div class="detail-card" style="max-width: 650px; margin: 0 auto;">
+        <h2>Create SF Creator Account</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+          Register as an SF developer to publish APK packages and web links.
+        </p>
+
+        <form id="regForm" onsubmit="handleDevRegister(event)">
+          <div class="form-group">
+            <label>Owner Name *</label>
+            <input type="text" id="regOwner" placeholder="e.g. Rahul Sharma" required />
+          </div>
+
+          <div class="form-group">
+            <label>Developer Account / Company Name *</label>
+            <input type="text" id="regCompany" placeholder="e.g. sf games and apps ltd." required oninput="checkPartnerStatus()" />
+            <small style="color: var(--text-muted); font-size: 0.78rem;">
+              Accounts named <code>sf games and apps ltd.</code> qualify for instant free access.
+            </small>
+          </div>
+
+          <!-- Free Bypass Notification -->
+          <div id="partnerBanner" class="free-partner-alert">
+            🎉 Partner Verified: Welcome, SF Games and Apps Ltd.! Registration fee waived.
+          </div>
+
+          <!-- ₹1000 Fee Payment Screen -->
+          <div id="paymentBox" class="qr-container">
+            <div style="font-weight: 700; color: #fff; font-size: 1.1rem;">One-Time Account Activation: ₹1,000</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+              Scan the QR Code with Google Pay, PhonePe, or Paytm to finish setup.
+            </p>
+            <div class="qr-box">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=sfstore@upi&pn=SF%20Developer%20Account&am=1000&cu=INR" alt="Pay ₹1000" />
+            </div>
+            <div style="max-width: 320px; margin: 0 auto;">
+              <input type="text" id="utrNumber" placeholder="Enter UPI Transaction / UTR ID" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">Access Developer Console</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4. DEVELOPER CONSOLE (Publish APK, Google Drive, or Website Link) -->
+    <section id="devConsoleView" class="view">
+      <div class="detail-card">
+        <h2>SF Developer Console — Publish App</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+          Publish standalone APK files, Google Drive links, or direct website links.
+        </p>
+
+        <form id="publishForm" onsubmit="handleAppPublish(event)">
+          <div class="form-group">
+            <label>Company / Developer Name *</label>
+            <input type="text" id="pubCompany" readonly style="opacity: 0.85; cursor: not-allowed;" />
+          </div>
+
+          <div class="form-group">
+            <label>App / Game Name *</label>
+            <input type="text" id="pubAppName" placeholder="e.g. Galaxy Quest or MyStore App" required />
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="pubCategory">
+              <option value="Game">Game</option>
+              <option value="Application">Application</option>
+              <option value="Web App">Web App</option>
+            </select>
+          </div>
+
+          <!-- Method Selection Tabs -->
+          <div class="form-group">
+            <label>Choose Publishing Method *</label>
+            <div class="tab-options">
+              <button type="button" class="tab-btn active" onclick="selectPublishMethod('file')">📦 Direct APK File</button>
+              <button type="button" class="tab-btn" onclick="selectPublishMethod('drive')">📁 Google Drive Link</button>
+              <button type="button" class="tab-btn" onclick="selectPublishMethod('web')">🌐 Website Link</button>
+            </div>
+
+            <!-- APK File Method -->
+            <div id="methodFile" class="method-panel active">
+              <input type="file" id="pubApkFile" accept=".apk" style="padding: 0.6rem;" />
+              <small style="color: var(--text-muted); font-size: 0.78rem;">Upload your compiled .apk package directly.</small>
+            </div>
+
+            <!-- Drive Method -->
+            <div id="methodDrive" class="method-panel">
+              <input type="url" id="pubDriveLink" placeholder="https://drive.google.com/file/d/.../view" />
+              <small style="color: var(--text-muted); font-size: 0.78rem;">Public Google Drive shareable link to your APK.</small>
+            </div>
+
+            <!-- Website Link Method -->
+            <div id="methodWeb" class="method-panel">
+              <input type="url" id="pubWebLink" placeholder="https://yourwebsite.com or https://play.mygame.com" />
+              <small style="color: var(--text-muted); font-size: 0.78rem;">Users clicking 'Install' will be redirected directly to this website.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Store Description *</label>
+            <textarea id="pubDesc" rows="4" placeholder="Describe the application features, instructions, and changelog..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn" style="padding: 0.75rem 2rem;">Publish to SF Store</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Pre-loaded applications catalog
+    let apps = [
+      {
+        id: 1,
+        name: "Cyber Runner",
+        company: "SF Games and Apps Ltd.",
+        category: "Game",
+        type: "Direct APK",
+        icon: "🎮",
+        desc: "Fast-paced endless runner game with neon visuals and custom challenges.",
+        actionUrl: "#",
+        isWebLink: false,
+        reviews: [
+          { author: "Aman", rating: 5, text: "Awesome graphics and zero lag!" }
+        ]
+      },
+      {
+        id: 2,
+        name: "CryptoPortal",
+        company: "WebTech Solutions",
+        category: "Web App",
+        type: "Website Link",
+        icon: "🌐",
+        desc: "Interactive live crypto tracking web suite. Seamless browser experience.",
+        actionUrl: "https://www.google.com",
+        isWebLink: true,
+        reviews: [
+          { author: "Vikram", rating: 4, text: "Very convenient web app!" }
+        ]
+      }
+    ];
+
+    let devAccount = null;
+    let currentAppId = null;
+    let selectedRating = 5;
+    let currentUploadMethod = 'file';
+
+    // Switch between pages
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      if (viewId === 'storeView') renderAppGrid();
+    }
+
+    // Header Developer button handler
+    function handleDevNav() {
+      if (devAccount) {
+        document.getElementById('pubCompany').value = devAccount.company;
+        switchView('devConsoleView');
+      } else {
+        switchView('devRegisterView');
+      }
+    }
+
+    // Toggle between APK, Drive, and Web Link tabs
+    function selectPublishMethod(method) {
+      currentUploadMethod = method;
+      document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', 
+          (method === 'file' && idx === 0) || 
+          (method === 'drive' && idx === 1) || 
+          (method === 'web' && idx === 2)
+        );
+      });
+
+      document.getElementById('methodFile').classList.toggle('active', method === 'file');
+      document.getElementById('methodDrive').classList.toggle('active', method === 'drive');
+      document.getElementById('methodWeb').classList.toggle('active', method === 'web');
+    }
+
+    // Detect secret developer bypass
+    function checkPartnerStatus() {
+      const input = document.getElementById('regCompany').value.trim().toLowerCase();
+      const banner = document.getElementById('partnerBanner');
+      const payment = document.getElementById('paymentBox');
+
+      if (input === 'sf games and apps ltd.') {
+        banner.style.display = 'block';
+        payment.style.display = 'none';
+      } else {
+        banner.style.display = 'none';
+        payment.style.display = 'block';
+      }
+    }
+
+    // Handle developer account activation
+    function handleDevRegister(e) {
+      e.preventDefault();
+      const owner = document.getElementById('regOwner').value.trim();
+      const company = document.getElementById('regCompany').value.trim();
+      const isPartner = company.toLowerCase() === 'sf games and apps ltd.';
+
+      if (!isPartner) {
+        const utr = document.getElementById('utrNumber').value.trim();
+        if (!utr) {
+          alert('Please enter your ₹1000 Payment UTR / Transaction ID.');
+          return;
+        }
+      }
+
+      devAccount = { owner, company, isPartner };
+      document.getElementById('devPortalBtn').innerText = 'Console: ' + company;
+      document.getElementById('pubCompany').value = company;
+      alert('SF Creator Account Activated successfully!');
+      switchView('devConsoleView');
+    }
+
+    // Developer App Publishing
+    function handleAppPublish(e) {
+      e.preventDefault();
+      const company = document.getElementById('pubCompany').value;
+      const name = document.getElementById('pubAppName').value.trim();
+      const category = document.getElementById('pubCategory').value;
+      const desc = document.getElementById('pubDesc').value.trim();
+
+      let actionUrl = "";
+      let isWebLink = false;
+      let typeLabel = "APK";
+
+      if (currentUploadMethod === 'file') {
+        const fileInput = document.getElementById('pubApkFile');
+        if (fileInput.files.length === 0) {
+          alert('Please select an APK file to upload.');
+          return;
+        }
+        actionUrl = URL.createObjectURL(fileInput.files[0]);
+        typeLabel = "Direct APK";
+      } else if (currentUploadMethod === 'drive') {
+        actionUrl = document.getElementById('pubDriveLink').value.trim();
+        if (!actionUrl) {
+          alert('Please enter a valid Google Drive link.');
+          return;
+        }
+        typeLabel = "Drive APK";
+      } else if (currentUploadMethod === 'web') {
+        actionUrl = document.getElementById('pubWebLink').value.trim();
+        if (!actionUrl) {
+          alert('Please enter your website URL.');
+          return;
+        }
+        // Ensure proper schema
+        if (!actionUrl.startsWith('http://') && !actionUrl.startsWith('https://')) {
+          actionUrl = 'https://' + actionUrl;
+        }
+        isWebLink = true;
+        typeLabel = "Web Link";
+      }
+
+      const newApp = {
+        id: Date.now(),
+        name,
+        company,
+        category,
+        type: typeLabel,
+        icon: isWebLink ? '🌐' : (category === 'Game' ? '👾' : '📱'),
+        desc,
+        actionUrl,
+        isWebLink,
+        reviews: []
+      };
+
+      apps.unshift(newApp);
+      document.getElementById('publishForm').reset();
+      alert('Your app has been published to the SF Store!');
+      switchView('storeView');
+    }
+
+    // Render Store Grid
+    function renderAppGrid() {
+      const container = document.getElementById('appsContainer');
+      container.innerHTML = '';
+
+      apps.forEach(app => {
+        const avg = app.reviews.length
+          ? (app.reviews.reduce((s, r) => s + r.rating, 0) / app.reviews.length).toFixed(1)
+          : 'New';
+
+        const card = document.createElement('div');
+        card.className = 'app-card';
+        card.onclick = () => openAppDetails(app.id);
+        card.innerHTML = `
+          <div style="display:flex; gap:12px; align-items:center;">
+            <div class="app-icon">${app.icon}</div>
+            <div class="app-info">
+              <h3>${app.name}</h3>
+              <div class="company">${app.company}</div>
+              <span class="type-badge" style="margin-top: 4px; display:inline-block;">${app.type}</span>
+            </div>
+          </div>
+          <div class="app-rating-row">
+            ⭐ <span>${avg}</span> 
+            <span style="color:var(--text-muted); font-size:0.75rem;">(${app.reviews.length})</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Open Application Details
+    function openAppDetails(id) {
+      currentAppId = id;
+      const app = apps.find(a => a.id === id);
+      if (!app) return;
+
+      document.getElementById('dIcon').innerText = app.icon;
+      document.getElementById('dTitle').innerText = app.name;
+      document.getElementById('dCompany').innerText = app.company;
+      document.getElementById('dTypeBadge').innerText = app.type;
+      document.getElementById('dDesc').innerText = app.desc;
+
+      const installBtn = document.getElementById('dInstallBtn');
+      const btnText = document.getElementById('dBtnText');
+
+      installBtn.href = app.actionUrl;
+
+      // Handle Web Link redirect vs APK file download
+      if (app.isWebLink) {
+        btnText.innerText = "Visit Website ↗";
+        installBtn.removeAttribute('download');
+      } else if (app.actionUrl.startsWith('blob:')) {
+        btnText.innerText = "Download APK";
+        installBtn.setAttribute('download', `${app.name}.apk`);
+      } else {
+        btnText.innerText = "Install via Drive";
+        installBtn.removeAttribute('download');
+      }
+
+      renderReviews(app);
+      switchView('appDetailView');
+    }
+
+    // Reviews System
+    function renderReviews(app) {
+      const avg = app.reviews.length
+        ? (app.reviews.reduce((s, r) => s + r.rating, 0) / app.reviews.length).toFixed(1)
+        : '0.0';
+
+      document.getElementById('dRating').innerText = avg;
+      document.getElementById('dReviewCount').innerText = app.reviews.length;
+
+      const container = document.getElementById('reviewsContainer');
+      container.innerHTML = '';
+
+      if (app.reviews.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">No reviews yet. Be the first to leave one!</p>';
+        return;
+      }
+
+      app.reviews.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        item.innerHTML = `
+          <div style="font-weight:600; font-size:0.85rem; margin-bottom:0.2rem;">${r.author} • ⭐ ${r.rating}</div>
+          <div style="font-size:0.85rem; color: var(--text-muted);">${r.text}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function setRating(val) {
+      selectedRating = val;
+      const stars = document.querySelectorAll('#starContainer .star');
+      stars.forEach((s, idx) => {
+        s.classList.toggle('selected', idx < val);
+      });
+    }
+
+    function submitReview(e) {
+      e.preventDefault();
+      const app = apps.find(a => a.id === currentAppId);
+      if (!app) return;
+
+      const author = document.getElementById('reviewerName').value.trim();
+      const text = document.getElementById('reviewText').value.trim();
+
+      app.reviews.unshift({ author, rating: selectedRating, text });
+      document.getElementById('reviewForm').reset();
+      setRating(5);
+      renderReviews(app);
+    }
+
+    // Initial render
+    renderAppGrid();
+  </script>
+</body>
+</html>
